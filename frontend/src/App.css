@@ -1,0 +1,84 @@
+/* App.css - LIGHT SAAS EDITION */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-white: #ffffff;
+  --bg-soft: #fbfbfe;
+  --notion-purple: #9D59EF; /* The vibrant purple from your image */
+  --notion-purple-light: #f5f0ff;
+  --zinc-900: #18181b;
+  --zinc-500: #71717a;
+  --border: #e4e4e7;
+}
+
+body {
+    background-color: var(--bg-white) !important;
+    font-family: 'Inter', sans-serif !important;
+    color: var(--zinc-900) !important;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* BUTTONS - SAAS STYLE */
+.btn-neon { /* Keeping class name same as requested, but styling as Notion Purple */
+    background-color: var(--notion-purple) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+    border: none !important;
+    transition: all 0.2s ease;
+}
+
+.btn-neon:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.btn-outline-neon {
+    background-color: var(--bg-white) !important;
+    color: var(--zinc-900) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+}
+
+.btn-outline-neon:hover {
+    background-color: var(--bg-soft) !important;
+}
+
+/* CARDS - MINIMALIST */
+.aras-card {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    padding: 40px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* INPUT FIELDS */
+.form-control {
+    background: var(--bg-soft) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--zinc-900) !important;
+    border-radius: 10px !important;
+    padding: 14px !important;
+}
+
+.form-control:focus {
+    border-color: var(--notion-purple) !important;
+    box-shadow: 0 0 0 4px var(--notion-purple-light) !important;
+}
+
+/* PROGRESS BAR */
+.progress-dark {
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.progress-bar-inner {
+    background: var(--notion-purple) !important;
+    height: 100%;
+    border-radius: 10px;
+}
