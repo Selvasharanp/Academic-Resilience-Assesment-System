@@ -7,7 +7,23 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://academic-resilience-assessment-system-7ivblh3n0.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error("CORS not allowed"), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
+app.options("*", cors()); // handle preflight requests
 app.use(express.json()); // Parses incoming JSON requests
 
 // 1. Database Connection
