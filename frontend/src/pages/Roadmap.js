@@ -12,8 +12,14 @@ export default function Roadmap() {
             if (!userId) return;
             
             try {
-                const resRes = await axios.get(`http://localhost:5000/api/assessment/user-result/${userId}`);
-                const roadRes = await axios.post('http://localhost:5000/api/ai-support/generate-roadmap', { scores: resRes.data });
+                const resRes = await axios.get(
+    `${process.env.REACT_APP_API_URL}/api/assessment/user-result/${userId}`
+);
+
+const roadRes = await axios.post(
+    `${process.env.REACT_APP_API_URL}/api/ai-support/generate-roadmap`,
+    { scores: resRes.data }
+);
                 
                 if (roadRes.data.steps) {
                     setSteps(roadRes.data.steps);

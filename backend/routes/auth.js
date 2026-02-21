@@ -7,27 +7,33 @@ const jwt = require('jsonwebtoken');
 // Register - Everyone is now a student
 router.post('/register', async (req, res) => {
     try {
+        console.log("Incoming body:", req.body);
+
         const { name, email, password } = req.body;
 
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) return res.status(400).json({ message: "An account with this email already exists" });
+        console.log("Extracted email:", email);
 
-        // Hash the password
+        const existingUser = await User.findOne({ email });
+        console.log("Existing user found:", existingUser);
+
+        if (existingUser)
+            return res.status(400).json({ message: "An account with this email already exists" });
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create and save user with the role hardcoded as 'student'
-        const user = new User({ 
-            name, 
-            email, 
-            password: hashedPassword, 
-            role: 'student' 
+        const user = new User({
+            name,
+            email,
+            password: hashedPassword,
+            role: 'student'
         });
+
         await user.save();
-        
+
         res.status(201).json({ message: "Student account registered successfully" });
-    } catch (err) { 
-        res.status(500).json({ error: "Server error during registration" }); 
+    } catch (err) {
+        console.log("Error:", err);
+        res.status(500).json({ error: "Server error during registration" });
     }
 });
 

@@ -11,7 +11,7 @@ export default function SimulatorQuiz() {
     const [analysisResult, setAnalysisResult] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/scenario/generate?mode=ai`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/scenario/generate?mode=ai`)
             .then(res => { setScenario(res.data.scenario); setLoading(false); });
     }, []);
 
@@ -19,10 +19,13 @@ export default function SimulatorQuiz() {
         if (userInput.trim().length < 15) return alert("System requires more behavioral detail.");
         setIsAnalyzing(true);
         try {
-            const res = await axios.post('http://localhost:5000/api/ai-support/grade-simulation', {
-                scenario: scenario,
-                userAction: userInput
-            });
+    const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/ai-support/grade-simulation`,
+        {
+            scenario: scenario,
+            userAction: userInput
+        }
+    );
             setAnalysisResult(res.data);
         } catch (err) { alert("AI sync error."); }
         setIsAnalyzing(false);
@@ -39,7 +42,10 @@ export default function SimulatorQuiz() {
                 nAI: Math.round(analysisResult.scores.negativeAffect * 3.5)
             };
 
-            await axios.post('http://localhost:5000/api/assessment/submit', submissionData);
+            await axios.post(
+    `${process.env.REACT_APP_API_URL}/api/assessment/submit`,
+    submissionData
+);
             localStorage.setItem('hasHistory', 'true');
             navigate('/student-dashboard');
         } catch (err) {

@@ -10,31 +10,37 @@ export default function Login() {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('userId', res.data.userId);
-            localStorage.setItem('userName', res.data.name);
-            
-            const historyRes = await axios.get(`http://localhost:5000/api/assessment/user-history/${res.data.userId}`);
-            const userHasHistory = historyRes.data.length > 0;
-            localStorage.setItem('hasHistory', userHasHistory ? 'true' : 'false');
+    e.preventDefault();
+    setLoading(true);
+    try {
+        const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/auth/login`,
+            { email, password }
+        );
+        
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userId', res.data.userId);
+        localStorage.setItem('userName', res.data.name);
+        
+        const historyRes = await axios.get(
+            `${process.env.REACT_APP_API_URL}/api/assessment/user-history/${res.data.userId}`
+        );
 
-            setLoading(false);
+        const userHasHistory = historyRes.data.length > 0;
+        localStorage.setItem('hasHistory', userHasHistory ? 'true' : 'false');
 
-            if (!userHasHistory) {
-                navigate('/welcome');
-            } else {
-                navigate('/student-dashboard');
-            }
-        } catch (err) { 
-            setLoading(false);
-            alert("Authorization Failure: Check your identity or access key."); 
+        setLoading(false);
+
+        if (!userHasHistory) {
+            navigate('/welcome');
+        } else {
+            navigate('/student-dashboard');
         }
-    };
+    } catch (err) { 
+        setLoading(false);
+        alert("Authorization Failure: Check your identity or access key."); 
+    }
+};
 
     return (
         /* BACKGROUND CHANGED TO WHITE, TEXT TO DARK CHARCOAL */

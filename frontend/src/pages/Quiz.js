@@ -13,32 +13,37 @@ export default function Quiz() {
     const [summaryReport, setSummaryReport] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/scenario/generate?mode=standard`)
-            .then(res => { setSituations(res.data.situations); setLoading(false); });
-    }, []);
+    axios.get(`${process.env.REACT_APP_API_URL}/api/scenario/generate?mode=standard`)
+        .then(res => { setSituations(res.data.situations); setLoading(false); });
+}, []);
 
-    const handleNext = (val) => {
-        const currentSit = situations[sitIdx];
-        const currentQ = currentSit.questions[quesIdx];
-        let score = currentQ.isReverse ? (6 - val) : val;
-        const newAnswers = [...answers, { val: score, category: currentQ.category, qId: currentQ.id }];
-        setAnswers(newAnswers);
+const handleNext = (val) => {
+    const currentSit = situations[sitIdx];
+    const currentQ = currentSit.questions[quesIdx];
+    let score = currentQ.isReverse ? (6 - val) : val;
+    const newAnswers = [...answers, { val: score, category: currentQ.category, qId: currentQ.id }];
+    setAnswers(newAnswers);
 
-        if (quesIdx < 4) setQuesIdx(quesIdx + 1);
-        else if (sitIdx < 5) setIsPaused(true);
-        else handleFinalSubmit(newAnswers);
-    };
+    if (quesIdx < 4) setQuesIdx(quesIdx + 1);
+    else if (sitIdx < 5) setIsPaused(true);
+    else handleFinalSubmit(newAnswers);
+};
 
-    const handleFinalSubmit = async (finalData) => {
-        try {
-            const res = await axios.post('http://localhost:5000/api/assessment/submit', { 
+const handleFinalSubmit = async (finalData) => {
+    try {
+        const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/assessment/submit`,
+            { 
                 userId: localStorage.getItem('userId'), 
                 answers: finalData 
-            });
-            localStorage.setItem('hasHistory', 'true');
-            setSummaryReport(res.data); 
-        } catch (err) { console.error(err); }
-    };
+            }
+        );
+        localStorage.setItem('hasHistory', 'true');
+        setSummaryReport(res.data); 
+    } catch (err) { 
+        console.error(err); 
+    }
+};
 
     if (loading) return (
         <div className="vh-100 bg-white d-flex align-items-center justify-content-center text-dark font-monospace">

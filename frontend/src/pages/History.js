@@ -33,7 +33,7 @@ export default function History() {
         const userId = localStorage.getItem('userId');
         const fetchHistory = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/assessment/user-history/${userId}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/assessment/user-history/${userId}`);
                 setHistory(res.data);
                 setLoading(false);
             } catch (err) {

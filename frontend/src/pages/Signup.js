@@ -12,7 +12,10 @@ export default function Signup() {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/auth/register', formData);
+            await axios.post(
+    `${process.env.REACT_APP_API_URL}/api/auth/register`,
+    formData
+);
             setLoading(false);
             navigate('/login');
         } catch (err) { 

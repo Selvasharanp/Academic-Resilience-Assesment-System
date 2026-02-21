@@ -10,7 +10,6 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-
 // Register the components
 ChartJS.register(
     CategoryScale,
@@ -20,18 +19,16 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
 export default function Benchmarks() {
     const [latest, setLatest] = useState(null);
     const [global, setGlobal] = useState(null);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         const fetchBenchmarkData = async () => {
             try {
-                const resLatest = await axios.get(`http://localhost:5000/api/assessment/user-result/${userId}`);
-                const resGlobal = await axios.get(`http://localhost:5000/api/assessment/global-stats`);
+                const resLatest = await axios.get(`${process.env.REACT_APP_API_URL}/api/assessment/user-result/${userId}`);
+                const resGlobal = await axios.get(`${process.env.REACT_APP_API_URL}/api/assessment/global-stats`);
                 setLatest(resLatest.data);
                 setGlobal(resGlobal.data);
                 setLoading(false);
@@ -42,7 +39,6 @@ export default function Benchmarks() {
         };
         fetchBenchmarkData();
     }, []);
-
     if (loading) return (
         /* LOADING STATE UPDATED TO LIGHT THEME */
         <div className="vh-100 bg-white d-flex flex-column align-items-center justify-content-center text-dark font-monospace">
@@ -50,14 +46,11 @@ export default function Benchmarks() {
              <span style={{ color: '#9D59EF', fontWeight: 'bold' }}>SYNCING_POPULATION_DATA...</span>
         </div>
     );
-
     if (!latest) return null;
-
     return (
         /* BACKGROUND CHANGED TO WHITE, TEXT TO DARK CHARCOAL */
         <div className="min-vh-100 bg-white text-dark py-5 px-3">
-            <div className="container py-5 text-start">
-                
+            <div className="container py-5 text-start">                
                 {/* Header Area */}
                 <div className="mb-5">
                     <span className="badge mb-3 px-3 py-1 fw-bold" style={{ background: '#f5f0ff', color: '#9D59EF', borderRadius: '50px', fontSize: '0.7rem', letterSpacing: '1px' }}>
@@ -66,7 +59,6 @@ export default function Benchmarks() {
                     <h1 className="display-4 fw-bold text-dark mb-2">Population Benchmark.</h1>
                     <p style={{ color: '#71717a' }} className="fs-5">Real-time analysis against the anonymised participant mean.</p>
                 </div>
-
                 {/* Benchmark Chart Card - LIGHT SAAS LOOK */}
                 <div className="aras-card border-0 shadow-sm" style={{ background: '#ffffff', border: '1px solid #e4e4e7', padding: '40px', borderRadius: '24px' }}>
                     <div className="d-flex justify-content-between align-items-center mb-5">
@@ -83,7 +75,6 @@ export default function Benchmarks() {
                             </div>
                         </div>
                     </div>
-
                     <div style={{ height: '450px' }}>
                         <Bar data={{
                             labels: ['PERSEVERANCE', 'HELP-SEEKING', 'EMOTIONAL REG.'],
@@ -133,7 +124,6 @@ export default function Benchmarks() {
                         }} />
                     </div>
                 </div>
-
                 {/* Bottom Insight Box */}
                 <div className="mt-5 p-4 rounded-4 shadow-sm" style={{ background: '#f5f0ff', border: '1px solid rgba(157, 89, 239, 0.2)' }}>
                     <p className="m-0 small lh-lg text-dark fw-medium">
