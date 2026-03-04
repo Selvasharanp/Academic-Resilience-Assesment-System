@@ -25,26 +25,51 @@ export default function StudentDashboard() {
     const userName = localStorage.getItem('userName');
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/api/assessment/analysis`).then(res => setLatest(res.data));
-    }, [userId]);
+    const fetchAnalysis = async () => {
+        try {
+            const res = await axios.get(
+                `${process.env.REACT_APP_API_URL}/api/assessment/user-result/${userId}`
+            );
+            setLatest(res.data);
+        } catch (err) {
+            console.error("Error fetching analysis:", err);
+        }
+    };
+
+    if (userId) fetchAnalysis();
+}, [userId]);
 
     useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
     const handleChat = async (e) => {
-        e.preventDefault();
-        if (!userInput.trim()) return;
-        const newMsgs = [...messages, { sender: 'user', text: userInput }];
-        setMessages(newMsgs);
-        setUserInput("");
-        setIsChatLoading(true);
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/ai-support/chat`, { message: userInput });
-            setMessages(prev => [...prev, { sender: 'ai', text: res.data.reply }]);
-        } catch { 
-            setMessages(prev => [...prev, { sender: 'ai', text: "I'm experiencing a high load. Please continue focusing on your resilience goals." }]); 
-        }
-        setIsChatLoading(false);
-    };
+    e.preventDefault();
+    if (!userInput.trim()) return;
+
+    const newMsgs = [...messages, { sender: 'user', text: userInput }];
+    setMessages(newMsgs);
+    setUserInput("");
+    setIsChatLoading(true);
+
+    try {
+        const res = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/ai-support/chat`,
+            { message: userInput }
+        );
+
+        setMessages(prev => [
+            ...prev,
+            { sender: 'ai', text: res.data.reply }
+        ]);
+
+    } catch {
+        setMessages(prev => [
+            ...prev,
+            { sender: 'ai', text: "I'm experiencing a high load. Please continue focusing on your resilience goals." }
+        ]);
+    }
+
+    setIsChatLoading(false);
+};
 
     if (!latest) return (
         /* LOADING SPINNER CHANGED TO PURPLE */
