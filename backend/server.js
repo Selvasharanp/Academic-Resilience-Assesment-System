@@ -8,7 +8,7 @@ const app = express();
 // ✅ CORS Configuration (Production Safe)
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://academic-resilience-assessment-system-7ivblh3n0.vercel.app"
+  "https://academic-resilience-assesment-syste.vercel.app"
 ];
 
 app.use(cors({
