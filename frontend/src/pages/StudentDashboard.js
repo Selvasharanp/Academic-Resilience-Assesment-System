@@ -25,7 +25,7 @@ export default function StudentDashboard() {
     const userName = localStorage.getItem('userName');
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/assessment/user-result/${userId}`).then(res => setLatest(res.data));
+        axios.get(`${process.env.REACT_APP_API_URL}/api/assessment/analysis`).then(res => setLatest(res.data));
     }, [userId]);
 
     useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -38,7 +38,7 @@ export default function StudentDashboard() {
         setUserInput("");
         setIsChatLoading(true);
         try {
-            const res = await axios.post('http://localhost:5000/api/ai-support/chat', { message: userInput });
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/ai-support/chat`, { message: userInput });
             setMessages(prev => [...prev, { sender: 'ai', text: res.data.reply }]);
         } catch { 
             setMessages(prev => [...prev, { sender: 'ai', text: "I'm experiencing a high load. Please continue focusing on your resilience goals." }]); 
