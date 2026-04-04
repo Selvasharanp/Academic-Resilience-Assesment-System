@@ -1,19 +1,23 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
     const token = localStorage.getItem('token');
+    const { t } = useLanguage();
     
     // Check if the user has completed at least one test
     const hasHistory = localStorage.getItem('hasHistory') === 'true';
 
     const navLinks = [
-        { name: 'Analysis', path: '/student-dashboard' },
-        { name: 'Roadmap', path: '/roadmap' },
-        { name: 'Benchmarks', path: '/benchmarks' },
-        { name: 'History', path: '/history' }
+        { name: t('common.analysis'), path: '/student-dashboard' },
+        { name: t('common.roadmap'), path: '/roadmap' },
+        { name: t('common.benchmarks'), path: '/benchmarks' },
+        { name: t('common.history'), path: '/history' },
+        { name: t('common.support'), path: '/support' }
     ];
 
     const logout = () => { 
@@ -31,7 +35,7 @@ export default function Navbar() {
                     style={{ letterSpacing: '-0.5px' }}
                 >
                     {/* SYSTEM TEXT COLOR CHANGED TO PURPLE */}
-                    RESILIENCE<span style={{ color: '#9D59EF', marginLeft: '2px' }}>SYSTEM</span>
+                    {t('navbar.brandPrimary')}<span style={{ color: '#9D59EF', marginLeft: '2px' }}>{t('navbar.brandSecondary')}</span>
                 </Link>
 
                 {/* THE RESPONSIVE BURGER BUTTON - COLOR CHANGED TO DARK */}
@@ -63,17 +67,23 @@ export default function Navbar() {
                                 ))}
                             </ul>
                             <div className="ms-auto d-flex flex-column flex-lg-row align-items-center gap-3 mt-3 mt-lg-0">
+                                <LanguageSwitcher compact />
                                 {hasHistory && (
                                     /* BUTTON STYLE NOW HANDLED BY btn-neon PURPLE VERSION IN APP.CSS */
                                     <button className="btn btn-neon btn-sm px-4 fw-bold shadow-sm" onClick={() => navigate('/welcome')}>
-                                        Retake Test
+                                        {t('common.retakeTest')}
                                     </button>
                                 )}
                                 <button className="btn btn-link text-muted text-decoration-none small fw-bold" onClick={logout}>
-                                    Logout
+                                    {t('common.logout')}
                                 </button>
                             </div>
                         </>
+                    )}
+                    {!token && (
+                        <div className="ms-auto mt-3 mt-lg-0">
+                            <LanguageSwitcher compact />
+                        </div>
                     )}
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useLanguage } from '../context/LanguageContext';
 import { Line } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
@@ -26,6 +27,7 @@ ChartJS.register(
 );
 
 export default function History() {
+    const { t } = useLanguage();
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -46,9 +48,9 @@ export default function History() {
 
     if (loading) return (
         /* LOADING STATE UPDATED TO LIGHT THEME */
-        <div className="vh-100 bg-white d-flex flex-column align-items-center justify-content-center text-dark">
+            <div className="vh-100 bg-white d-flex flex-column align-items-center justify-content-center text-dark">
             <div className="spinner-border mb-4" style={{ color: '#9D59EF' }} role="status"></div>
-            <p className="fw-bold ls-widest text-uppercase small" style={{ color: '#9D59EF' }}>Retrieving Longitudinal Data...</p>
+            <p className="fw-bold ls-widest text-uppercase small" style={{ color: '#9D59EF' }}>{t('historyPage.loading')}</p>
         </div>
     );
 
@@ -59,24 +61,24 @@ export default function History() {
                 
                 {/* Section Header */}
                 <div className="mb-5">
-                    <h1 className="display-4 fw-bold text-dark mb-2">Resilience History.</h1>
-                    <p style={{ color: '#71717a' }} className="fs-5">Tracking your adaptive behavioral growth across diagnostic cycles.</p>
+                    <h1 className="display-4 fw-bold text-dark mb-2">{t('historyPage.title')}</h1>
+                    <p style={{ color: '#71717a' }} className="fs-5">{t('historyPage.subtitle')}</p>
                 </div>
 
                 {/* History Line Chart Card - LIGHT SAAS LOOK */}
                 <div className="aras-card border-0 shadow-sm" style={{ background: '#ffffff', border: '1px solid #e4e4e7', padding: '40px', borderRadius: '24px' }}>
                     <div className="d-flex justify-content-between align-items-center mb-5">
-                        <h5 className="fw-bold text-dark m-0">Score Evolution Path</h5>
+                        <h5 className="fw-bold text-dark m-0">{t('historyPage.scorePath')}</h5>
                         <div className="px-3 py-1 rounded bg-light text-muted small fw-bold uppercase ls-wide" style={{ fontSize: '0.6rem', border: '1px solid #e4e4e7' }}>
-                            TOTAL_TESTS: {history.length}
+                            {t('historyPage.totalTests')}: {history.length}
                         </div>
                     </div>
 
                     <div style={{ height: '450px' }}>
                         <Line data={{
-                            labels: history.map((_, i) => `Cycle ${i + 1}`),
+                            labels: history.map((_, i) => `${t('historyPage.cycle')} ${i + 1}`),
                             datasets: [{ 
-                                label: 'Index Score', 
+                                label: t('historyPage.indexScore'),
                                 data: history.map(h => h.totalScore), 
                                 /* LINE COLOR CHANGED TO PURPLE */
                                 borderColor: '#9D59EF', 
@@ -127,13 +129,13 @@ export default function History() {
                     <div className="row align-items-center text-start">
                         <div className="col-md-8">
                             <p className="m-0 small lh-lg" style={{ color: '#71717a' }}>
-                                <strong style={{ color: '#18181b' }}>Longitudinal Data:</strong> Your resilience trajectory is based on multiple data points. A rising curve indicates a successful integration of help-seeking and perseverance strategies into your academic routine.
+                                <strong style={{ color: '#18181b' }}>{t('historyPage.infoTitle')}</strong> {t('historyPage.infoText')}
                             </p>
                         </div>
                         <div className="col-md-4 text-md-end mt-3 mt-md-0">
                             {/* ACCENT COLOR CHANGED TO PURPLE */}
                             <span style={{ color: '#9D59EF', fontSize: '0.65rem' }} className="fw-bold text-uppercase ls-widest">
-                                Dataset: Secure Behavioral Cloud
+                                {t('historyPage.dataset')}
                             </span>
                         </div>
                     </div>

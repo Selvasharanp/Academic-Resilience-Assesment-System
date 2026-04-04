@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../App.css';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Signup() {
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { t } = useLanguage();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ export default function Signup() {
             navigate('/login');
         } catch (err) { 
             setLoading(false);
-            alert("Protocol Failure: Email already exists."); 
+            alert(t('signup.error'));
         }
     };
 
@@ -33,10 +35,10 @@ export default function Signup() {
                 <div className="mb-5 text-start">
                     <h1 className="display-4 fw-bold mb-2 ls-tight text-dark" style={{ letterSpacing: '-2px' }}>
                         {/* COLOR CHANGED TO NOTION PURPLE */}
-                        Create Profile<span style={{ color: '#9D59EF' }}>.</span>
+                        {t('signup.title').replace('.', '')}<span style={{ color: '#9D59EF' }}>.</span>
                     </h1>
                     <p className="fw-medium text-muted" style={{ fontSize: '0.9rem' }}>
-                        Initialise your Academic Resilience session.
+                        {t('signup.subtitle')}
                     </p>
                 </div>
 
@@ -47,12 +49,12 @@ export default function Signup() {
                         {/* Name Field */}
                         <div className="mb-4">
                             <label className="fw-bold small mb-2 d-block text-dark opacity-75 uppercase" style={{ letterSpacing: '1px', fontSize: '0.65rem' }}>
-                                Full Name
+                                {t('signup.nameLabel')}
                             </label>
                             <input 
                                 type="text" 
                                 className="form-control py-3 shadow-none text-dark" 
-                                placeholder="e.g. John Doe"
+                                placeholder={t('signup.namePlaceholder')}
                                 style={{ background: '#f4f4f5', border: '1px solid #e4e4e7', borderRadius: '10px', fontSize: '1rem' }}
                                 onChange={(e) => setFormData({...formData, name: e.target.value})} 
                                 required 
@@ -62,12 +64,12 @@ export default function Signup() {
                         {/* Email Field */}
                         <div className="mb-4">
                             <label className="fw-bold small mb-2 d-block text-dark opacity-75 uppercase" style={{ letterSpacing: '1px', fontSize: '0.65rem' }}>
-                                Email
+                                {t('signup.emailLabel')}
                             </label>
                             <input 
                                 type="email" 
                                 className="form-control py-3 shadow-none text-dark" 
-                                placeholder="name@university.edu"
+                                placeholder={t('signup.emailPlaceholder')}
                                 style={{ background: '#f4f4f5', border: '1px solid #e4e4e7', borderRadius: '10px', fontSize: '1rem' }}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})} 
                                 required 
@@ -77,7 +79,7 @@ export default function Signup() {
                         {/* Password Field */}
                         <div className="mb-5">
                             <label className="fw-bold small mb-2 d-block text-dark opacity-75 uppercase" style={{ letterSpacing: '1px', fontSize: '0.65rem' }}>
-                                Create Password
+                                {t('signup.passwordLabel')}
                             </label>
                             <input 
                                 type="password" 
@@ -101,14 +103,14 @@ export default function Signup() {
                             }} 
                             disabled={loading}
                         >
-                            {loading ? <span className="spinner-border spinner-border-sm"></span> : "ESTABLISH PROFILE"}
+                            {loading ? <span className="spinner-border spinner-border-sm"></span> : t('signup.submit')}
                         </button>
                     </form>
                     
                     <div className="mt-4 text-center">
                         <Link to="/login" className="text-muted small text-decoration-none fw-bold" style={{ fontSize: '0.8rem' }}>
                             {/* ACCENT COLOR CHANGED TO PURPLE */}
-                            ALREADY REGISTERED? <span style={{ color: '#9D59EF' }}>SIGN IN</span>
+                            {t('signup.loginPrompt')} <span style={{ color: '#9D59EF' }}>{t('signup.loginAction')}</span>
                         </Link>
                     </div>
                 </div>
@@ -116,7 +118,7 @@ export default function Signup() {
                 {/* Minimal Footer */}
                 <div className="mt-5 text-center opacity-25">
                     <p className="small ls-widest text-uppercase fw-bold text-dark" style={{ fontSize: '0.6rem' }}>
-                        Psychometric Standard ARS-30 // RSA Secured
+                        {t('signup.footer')}
                     </p>
                 </div>
 

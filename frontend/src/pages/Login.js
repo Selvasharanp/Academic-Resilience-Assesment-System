@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../App.css'; 
+import '../App.css';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { t } = useLanguage();
 
     const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ export default function Login() {
         }
     } catch (err) { 
         setLoading(false);
-        alert("Authorization Failure: Check your identity or access key."); 
+        alert(t('login.error'));
     }
 };
 
@@ -50,10 +52,10 @@ export default function Login() {
                 {/* Minimal Header */}
                 <div className="mb-5 text-start">
                     <h1 className="display-4 fw-bold mb-2 ls-tight text-dark" style={{ letterSpacing: '-2px' }}>
-                        Sign In<span style={{ color: '#9D59EF' }}>.</span>
+                        {t('login.title').replace('.', '')}<span style={{ color: '#9D59EF' }}>.</span>
                     </h1>
                     <p className="fw-medium text-muted" style={{ fontSize: '0.9rem' }}>
-                        Resume your diagnostic resilience session.
+                        {t('login.subtitle')}
                     </p>
                 </div>
 
@@ -64,12 +66,12 @@ export default function Login() {
                         {/* Email / Identity Input */}
                         <div className="mb-4 text-start">
                             <label className="fw-bold small mb-2 d-block text-dark opacity-75 uppercase" style={{ letterSpacing: '1px', fontSize: '0.65rem' }}>
-                                Email Address
+                                {t('login.emailLabel')}
                             </label>
                             <input 
                                 type="email" 
                                 className="form-control py-3 text-dark shadow-none" 
-                                placeholder="name@university.edu"
+                                placeholder={t('login.emailPlaceholder')}
                                 style={{ 
                                     background: '#fbfbfe', // Soft off-white
                                     border: '1px solid #e4e4e7', 
@@ -84,7 +86,7 @@ export default function Login() {
                         {/* Password / Access Key Input */}
                         <div className="mb-5 text-start">
                             <label className="fw-bold small mb-2 d-block text-dark opacity-75 uppercase" style={{ letterSpacing: '1px', fontSize: '0.65rem' }}>
-                                Enter Password
+                                {t('login.passwordLabel')}
                             </label>
                             <input 
                                 type="password" 
@@ -115,7 +117,7 @@ export default function Login() {
                         >
                             {loading ? (
                                 <div className="spinner-border spinner-border-sm text-white"></div>
-                            ) : "AUTHORIZE ACCESS"}
+                            ) : t('login.submit')}
                         </button>
                     </form>
                     
@@ -123,7 +125,7 @@ export default function Login() {
                     <div className="mt-4 text-center">
                         <Link to="/signup" className="text-muted small text-decoration-none fw-bold" style={{ fontSize: '0.8rem' }}>
                             {/* ACCENT COLOR CHANGED TO PURPLE */}
-                            NEW USER? <span style={{ color: '#9D59EF' }}>CREATE PROFILE</span>
+                            {t('login.signupPrompt')} <span style={{ color: '#9D59EF' }}>{t('login.signupAction')}</span>
                         </Link>
                     </div>
                 </div>
@@ -131,7 +133,7 @@ export default function Login() {
                 {/* System Footer Tag */}
                 <div className="mt-5 text-center opacity-25">
                     <p className="small ls-widest text-uppercase fw-bold text-dark" style={{ fontSize: '0.6rem' }}>
-                        Secured Access Protocol // ARAS_v2.4
+                        {t('login.footer')}
                     </p>
                 </div>
 
